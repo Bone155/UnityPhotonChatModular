@@ -31,13 +31,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     // Update is called once per frame
     void Update()
     {
-        if (chatClient != null)
+        chatClient.Service();
+        if (Input.GetKey(KeyCode.Return))
         {
-            chatClient.Service();
-            if (Input.GetKey(KeyCode.Return))
-            {
-                SendMessage();
-            }
+            SendMessage();
         }
     }
 
