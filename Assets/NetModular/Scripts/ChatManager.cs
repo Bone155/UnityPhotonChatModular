@@ -13,9 +13,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public Text chatDisplay;
 
     public GameObject joinChatPanel;
-    public GameObject worldChatPanel;
+    public GameObject chatPanel;
 
     string worldChat;
+    string channelChat;
 
     // Start is called before the first frame update
     void Start()
@@ -68,7 +69,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnConnected()
     {
         joinChatPanel.SetActive(false);
-        worldChatPanel.SetActive(true);
+        chatPanel.SetActive(true);
         chatClient.Subscribe(new string[] { worldChat });
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
     }
