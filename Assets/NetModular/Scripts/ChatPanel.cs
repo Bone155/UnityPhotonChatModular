@@ -9,7 +9,6 @@ public class ChatPanel : MonoBehaviour
     [SerializeField] InputField chatInputField;
     [SerializeField] GameObject messagePrefab;
     [SerializeField] ScrollRect scrollChatRect;
-    [SerializeField] GameManager gameManager;
 
     RectTransform rectTransform;
     bool isMine;
@@ -60,7 +59,7 @@ public class ChatPanel : MonoBehaviour
         string msg = chatInputField.text;
         if (!string.IsNullOrEmpty(msg))
         {
-            ChatManager.chatClient.SendPrivateMessage(ChatManager.privateChatTarget, msg);
+            //ChatManager.chatClient.SendPrivateMessage(ChatManager.privateChatTarget, msg);
         }
         chatInputField.text = "";
     }

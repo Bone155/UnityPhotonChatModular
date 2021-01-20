@@ -8,9 +8,8 @@ using System.Collections.Generic;
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
     [SerializeField] GameObject friendPanel;
-    [SerializeField] GameManager gameManager;
 
-    public static ChatClient chatClient;
+    public ChatClient chatClient;
 
     public InputField playerNameInputField;
     public InputField createChannelInput;

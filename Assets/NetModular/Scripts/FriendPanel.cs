@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FriendPanel : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
     [SerializeField] GameObject friendPrefab;
     [SerializeField] Transform friendParent;
     public List<Friend> friends = new List<Friend>();
