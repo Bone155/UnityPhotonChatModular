@@ -3,20 +3,27 @@ using UnityEngine.UI;
 using Photon.Chat;
 using Photon.Pun;
 using ExitGames.Client.Photon;
+using System.Collections.Generic;
 
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
-    ChatClient chatClient;
+    [SerializeField] GameObject friendPanel;
+    [SerializeField] GameManager gameManager;
 
-    public InputField playerName;
+    public static ChatClient chatClient;
+
+    public InputField playerNameInputField;
+    public InputField createChannelInput;
     public InputField chatInput;
-    public Text chatDisplay;
-
-    public GameObject joinChatPanel;
+    string worldChat = "world";
+    
     public GameObject chatPanel;
+    public const string playerNameKey = "PlayerName";
+    public static string privateChatTarget;
+    ChatChannel chatChannel;
 
-    string worldChat;
-    string channelChat;
+    List<string> friendList = new List<string> { "Nitil", "Raj" };
+    bool isGamePaused;
 
     // Start is called before the first frame update
     void Start()
@@ -25,34 +32,52 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         {
             return;
         }
-
-        worldChat = "world";
+        if (PlayerPrefs.HasKey(playerNameKey))
+        {
+            StartChatClient();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        chatClient.Service();
-        if (Input.GetKey(KeyCode.Return))
+        if (chatClient != null)
         {
-            SendMessage();
+            chatClient.Service();
         }
     }
 
-    #region Public Methods
-
-    public void GetConnected()
+    private void OnApplicationQuit()
     {
+        //chatPanel.GetComponent<ChatPanel>().OnDisconnection();
+    }
+
+    public void StartChatClient()
+    {
+        if (!PlayerPrefs.HasKey(playerNameKey))
+        {
+            PlayerPrefs.SetString(playerNameKey, playerNameInputField.text);
+            PhotonNetwork.NickName = playerNameInputField.text;
+        }
+
         chatClient = new ChatClient(this);
-        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(playerName.text));
+        chatChannel = new ChatChannel(worldChat);
+        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(PlayerPrefs.GetString(playerNameKey)));
     }
 
-    public void SendMessage()
+    public void OnSendMessage()
     {
-        chatClient.PublishMessage(worldChat, chatInput.text);
+        if (!string.IsNullOrEmpty(chatInput.text) && (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)))
+        {
+            chatClient.PublishMessage(chatChannel.Name, chatInput.text);
+        }
     }
 
-    #endregion
+    public void OnCreateChannel()
+    {
+        chatChannel = new ChatChannel(createChannelInput.name);
+        chatClient.Subscribe(new string[] { chatChannel.Name });
+    }
 
     #region IChatClientListner implementation
 
@@ -68,22 +93,22 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnConnected()
     {
-        joinChatPanel.SetActive(false);
-        chatPanel.SetActive(true);
+        chatClient.AddFriends(friendList.ToArray());
         chatClient.Subscribe(new string[] { worldChat });
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
+
     }
 
     public void OnDisconnected()
     {
-        chatClient.SetOnlineStatus(ChatUserStatus.Offline);
+        
     }
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         for (int i = 0; i < senders.Length; i++)
         {
-            chatDisplay.text += senders[i] + ": " + messages[i] + "\n";
+            //chatDisplay.text += senders[i] + ": " + messages[i] + "\n";
         }
     }
 
@@ -92,17 +117,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         
     }
 
-    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
-    {
-        
-    }
-
     public void OnSubscribed(string[] channels, bool[] results)
     {
-        foreach(var channel in channels)
-        {
-            chatClient.PublishMessage(channel, "joined");
-        }
+        
     }
 
     public void OnUnsubscribed(string[] channels)
@@ -110,6 +127,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         
     }
 
+    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
+    {
+        
+    }
+    
     public void OnUserSubscribed(string channel, string user)
     {
         
