@@ -1,84 +1,94 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;
 using Photon.Pun;
 using ExitGames.Client.Photon;
-using System.Collections.Generic;
 
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
-    [SerializeField] GameObject friendPanel;
-
     public ChatClient chatClient;
+    public int HistoryChatLength = 0;
 
-    public InputField playerNameInputField;
-    public InputField createChannelInput;
-    public InputField chatInput;
-    string worldChat = "world";
-    
-    public GameObject chatPanel;
-    public const string playerNameKey = "PlayerName";
-    public static string privateChatTarget;
-    ChatChannel chatChannel;
+    public string playerName = "PlayerName";
 
-    List<string> friendList = new List<string> { "Nitil", "Raj" };
-    bool isGamePaused;
+    public GameObject friendPrefab;
+    public string[] friendsList;
+
+    public GameObject channelPrefab;
+    public string[] channelList;
+    string channelName;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (string.IsNullOrEmpty(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat))
-        {
-            return;
-        }
-        if (PlayerPrefs.HasKey(playerNameKey))
-        {
-            StartChatClient();
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (chatClient != null)
+        
+    }
+
+    public void Connect()
+    {
+        chatClient = new ChatClient(this)
         {
-            chatClient.Service();
+            UseBackgroundWorkerForSending = true,
+            AuthValues = new AuthenticationValues(playerName)
+        };
+        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(PlayerPrefs.GetString(playerName)));
+    }
+
+    public void ToSendMessage()
+    {
+
+    }
+
+    public void SendChatMessage(string inputLine)
+    {
+        if (string.IsNullOrEmpty(inputLine))
+        {
+            return;
+        }
+
+        bool isPrivate = false;
+        if (isPrivate)
+        {
+            chatClient.TryGetChannel(channelName, out ChatChannel selectedChannel);
         }
     }
 
-    private void OnApplicationQuit()
+    public void AddMessageToSelectedChannel(string msg)
     {
-        //chatPanel.GetComponent<ChatPanel>().OnDisconnection();
+
     }
 
-    public void StartChatClient()
+    void SpawnChannel(string channelName)
     {
-        if (!PlayerPrefs.HasKey(playerNameKey))
+
+    }
+
+    void SpawnFriend(string friendName)
+    {
+        GameObject friend = Instantiate(friendPrefab);
+        friend.gameObject.SetActive(true);
+        Friend friendItem = friend.GetComponent<Friend>();
+        friendItem.Name = friendName;
+        friend.transform.SetParent(friendPrefab.transform.parent, false);
+    }
+
+    public void ShowChannnel(string channelName)
+    {
+        if (string.IsNullOrEmpty(channelName))
         {
-            PlayerPrefs.SetString(playerNameKey, playerNameInputField.text);
-            PhotonNetwork.NickName = playerNameInputField.text;
-        }
-
-        chatClient = new ChatClient(this);
-        chatChannel = new ChatChannel(worldChat);
-        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(PlayerPrefs.GetString(playerNameKey)));
-    }
-
-    public void OnSendMessage()
-    {
-        if (!string.IsNullOrEmpty(chatInput.text) && (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)))
-        {
-            chatClient.PublishMessage(chatChannel.Name, chatInput.text);
+            return;
         }
     }
 
-    public void OnCreateChannel()
-    {
-        chatChannel = new ChatChannel(createChannelInput.name);
-        chatClient.Subscribe(new string[] { chatChannel.Name });
-    }
-
-    #region IChatClientListner implementation
+    #region IChatClientListener implementation
 
     public void DebugReturn(DebugLevel level, string message)
     {
@@ -92,10 +102,22 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnConnected()
     {
-        chatClient.AddFriends(friendList.ToArray());
-        chatClient.Subscribe(new string[] { worldChat });
-        chatClient.SetOnlineStatus(ChatUserStatus.Online);
+        if (channelList != null && channelList.Length > 0)
+        {
+            chatClient.Subscribe(channelList, HistoryChatLength);
+        }
 
+        if (friendsList != null && friendsList.Length > 0)
+        {
+            chatClient.AddFriends(friendsList);
+
+            foreach(string friend in friendsList)
+            {
+
+            }
+        }
+
+        chatClient.SetOnlineStatus(ChatUserStatus.Online);
     }
 
     public void OnDisconnected()
@@ -105,13 +127,15 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        for (int i = 0; i < senders.Length; i++)
-        {
-            //chatDisplay.text += senders[i] + ": " + messages[i] + "\n";
-        }
+        
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
+    {
+        
+    }
+
+    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
         
     }
@@ -126,11 +150,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         
     }
 
-    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
-    {
-        
-    }
-    
     public void OnUserSubscribed(string channel, string user)
     {
         

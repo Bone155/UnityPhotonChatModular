@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;
-using Photon.Pun;
 
 public class Friend : MonoBehaviour
 {
     public Text nameText;
-    public Text statusText;
 
-    public string friendName
+    public string Name
     {
         set
         {
@@ -24,36 +22,31 @@ public class Friend : MonoBehaviour
 
     public void SetFriendOnlineStatus(int status, bool gotMessage, object message)
     {
-        string friendStatus;
-
         switch (status)
         {
             case 1:
-                friendStatus = "Invisible";
+                // "Invisible";
                 break;
             case 2:
-                friendStatus = "Online";
-                statusText.color = Color.green;
+                // "Online";
+                nameText.color = Color.green;
                 break;
             case 3:
-                friendStatus = "Away";
+                // "Away";
                 break;
             case 4:
-                friendStatus = "Do not distrub";
+                // "Do not disturb";
                 break;
             case 5:
-                friendStatus = "Looking For Game/Group";
+                // "Looking for Game/Group";
                 break;
             case 6:
-                friendStatus = "Playing";
+                // "Playing";
                 break;
             default:
-                friendStatus = "Offline";
-                statusText.color = Color.red;
+                // "Offline";
+                nameText.color = Color.red;
                 break;
         }
-
-        statusText.text = friendStatus;
-
     }
 }
