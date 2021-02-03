@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Photon.Chat;
 
 public class Friend : MonoBehaviour
 {
     public Text nameText;
+    public Image image;
 
     public string Name
     {
@@ -20,7 +18,7 @@ public class Friend : MonoBehaviour
         }
     }
 
-    public void SetFriendOnlineStatus(int status, bool gotMessage, object message)
+    public void SetFriendOnlineStatus(int status)
     {
         switch (status)
         {
@@ -29,7 +27,7 @@ public class Friend : MonoBehaviour
                 break;
             case 2:
                 // "Online";
-                nameText.color = Color.green;
+                image.color = Color.green;
                 break;
             case 3:
                 // "Away";
@@ -45,7 +43,7 @@ public class Friend : MonoBehaviour
                 break;
             default:
                 // "Offline";
-                nameText.color = Color.red;
+                image.color = Color.red;
                 break;
         }
     }
