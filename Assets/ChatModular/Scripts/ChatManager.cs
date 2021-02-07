@@ -26,10 +26,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public InputField chatInput;
 
     public GameObject friendPrefab;
-    readonly Dictionary<string, Friend> friendItemList = new Dictionary<string, Friend>();
 
     public GameObject channelPrefab;
-    readonly Dictionary<string, Button> channelButtons = new Dictionary<string, Button>();
     public Text channelDisplayText;
     string selectedChannelName;
 
@@ -225,14 +223,14 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
-        if (friendItemList.ContainsKey(playerName))
-        {
-            Friend friend = friendItemList[playerName];
-            if (friend != null)
-            {
-                friend.SetFriendOnlineStatus(status);
-            }
-        }
+        //if (friendItemList.ContainsKey(playerName))
+        //{
+        //    Friend friend = friendItemList[playerName];
+        //    if (friend != null)
+        //    {
+        //        friend.SetFriendOnlineStatus(status);
+        //    }
+        //}
     }
 
     public void OnSubscribed(string[] channels, bool[] results)
@@ -254,21 +252,21 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         foreach (string channelName in channels)
         {
-            if (channelButtons.ContainsKey(channelName))
-            {
-                Button button = channelButtons[channelName];
-                Destroy(button.gameObject);
+            //if (channelButtons.ContainsKey(channelName))
+            //{
+            //    Button button = channelButtons[channelName];
+            //    Destroy(button.gameObject);
 
-                channelButtons.Remove(channelName);
+            //    channelButtons.Remove(channelName);
 
-                if (channelName == selectedChannelName && channelButtons.Count > 0)
-                {
-                    IEnumerator<KeyValuePair<string, Button>> channelEntry = channelButtons.GetEnumerator();
-                    channelEntry.MoveNext();
+            //    if (channelName == selectedChannelName && channelButtons.Count > 0)
+            //    {
+            //        IEnumerator<KeyValuePair<string, Button>> channelEntry = channelButtons.GetEnumerator();
+            //        channelEntry.MoveNext();
 
-                    ShowChannnel(channelEntry.Current.Key);
-                }
-            }
+            //        ShowChannnel(channelEntry.Current.Key);
+            //    }
+            //}
         }
     }
 
@@ -286,16 +284,16 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     void SpawnChannel(string channelName)
     {
-        if (channelButtons.ContainsKey(channelName))
-        {
-            return;
-        }
+        //if (channelButtons.ContainsKey(channelName))
+        //{
+        //    return;
+        //}
 
         GameObject channel = Instantiate(channelPrefab);
         channel.SetActive(true);
         channel.transform.SetParent(channelPanel, false);
         channel.GetComponentInChildren<SelectChannel>().SetChannel(channelName);
-        channelButtons.Add(channelName, channel.GetComponent<Button>());
+        //channelButtons.Add(channelName, channel.GetComponent<Button>());
     }
 
     void SpawnFriend(string friendName)
@@ -305,7 +303,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         Friend friendItem = friend.GetComponent<Friend>();
         friendItem.Name = friendName;
         friend.transform.SetParent(friendPanel, false);
-        friendItemList[friendName] = friendItem;
+        //friendItemList[friendName] = friendItem;
     }
 
 }
