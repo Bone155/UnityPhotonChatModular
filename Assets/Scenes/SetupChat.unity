@@ -906,10 +906,11 @@ GameObject:
   - component: {fileID: 696793553}
   - component: {fileID: 696793555}
   - component: {fileID: 696793554}
+  - component: {fileID: 696793558}
   - component: {fileID: 696793557}
   - component: {fileID: 696793556}
   m_Layer: 5
-  m_Name: FriendsPanel
+  m_Name: PlayersPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1017,6 +1018,20 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &696793558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696793552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c31ba24b12f894e8efe540fe2a23e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 3304649436989025686, guid: bb61194a12b25194ab10a310f9f68862,
+    type: 3}
 --- !u!1 &701968300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,131 +1182,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701968300}
   m_CullTransparentMesh: 0
---- !u!1001 &937032577
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1939854719}
-    m_Modifications:
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304649436989025686, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-        type: 3}
-      propertyPath: m_Name
-      value: Channel
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a, type: 3}
---- !u!224 &937032578 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3304649436989025673, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-    type: 3}
-  m_PrefabInstance: {fileID: 937032577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1070330711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,7 +1271,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Friends
+  m_Text: Players
 --- !u!222 &1070330715
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2449,7 +2339,6 @@ RectTransform:
   m_Children:
   - {fileID: 1530856209}
   - {fileID: 199762068}
-  - {fileID: 937032578}
   m_Father: {fileID: 1231093035}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2539,6 +2428,51 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!1 &2136531196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2136531198}
+  - component: {fileID: 2136531197}
+  m_Layer: 0
+  m_Name: PhotonMono
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2136531197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136531196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177bddf229f8d8445a70c0652f03b7df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeepAliveInBackground: 60000
+  ApplyDontDestroyOnLoad: 1
+--- !u!4 &2136531198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136531196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7605142852889398822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2738,22 +2672,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HistoryChatLength: 0
-  friendsList:
-  - Matt
   channelList:
   - World
-  - AIE
   playerName: PlayerName
   playerId: {fileID: 1255840982}
   chatPanel: {fileID: 1231093034}
   signInPanel: {fileID: 7605142854289406149}
-  channelPanel: {fileID: 1939854719}
-  friendPanel: {fileID: 696793553}
   chatInput: {fileID: 7605142854030196283}
-  friendPrefab: {fileID: 3304649436989025686, guid: bb61194a12b25194ab10a310f9f68862,
-    type: 3}
-  channelPrefab: {fileID: 3304649436989025686, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
-    type: 3}
   channelDisplayText: {fileID: 1544908665}
 --- !u!4 &7605142853424617447
 Transform:

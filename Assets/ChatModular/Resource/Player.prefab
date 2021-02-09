@@ -76,7 +76,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Channel Name
+  m_Text: Online Player Name
 --- !u!1 &3304649436989025686
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,17 +88,15 @@ GameObject:
   - component: {fileID: 3304649436989025673}
   - component: {fileID: 3304649436989025674}
   - component: {fileID: 3304649436989025675}
-  - component: {fileID: 5052621651536302013}
   - component: {fileID: 3304649436989025672}
   - component: {fileID: 3011590940250414811}
-  - component: {fileID: 9084404202789604545}
   m_Layer: 5
-  m_Name: Friend
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3304649436989025673
 RectTransform:
   m_ObjectHideFlags: 0
@@ -140,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.101960786, g: 0.5019608, b: 0.44705883, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -155,20 +153,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5052621651536302013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304649436989025686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18540efd1f825c448c1a7de8e62b36b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 3304649436937207877}
-  image: {fileID: 3304649436989025675}
 --- !u!114 &3304649436989025672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,18 +195,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3304649436989025675}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9084404202789604545}
-        m_MethodName: ChannelSelect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &3011590940250414811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,16 +216,3 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &9084404202789604545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304649436989025686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3c5f897084d30d4eb46b3233e3df33a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Channel: 

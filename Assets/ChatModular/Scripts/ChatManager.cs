@@ -11,8 +11,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public ChatClient chatClient;
     public int HistoryChatLength = 0;
 
-    public string[] friendsList;
-    public string[] channelList;
+    public List<string> channelList;
 
     public string playerName = "PlayerName";
     public Text playerId;
@@ -20,15 +19,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public GameObject chatPanel;
     public GameObject signInPanel;
 
-    public Transform channelPanel; // to set channelPrefab parent
-    public Transform friendPanel; // to set friendPrefab parent
-
     public InputField chatInput;
-
-    public GameObject friendPrefab;
-
-    public GameObject channelPrefab;
     public Text channelDisplayText;
+
     string selectedChannelName;
 
     Color myColor;
@@ -119,7 +112,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             //    string message = line[1];
             //    chatClient.SendPrivateMessage(target, message);
             //}
-
+            if (inputLine.Equals("@Leave"))
+            {
+                chatClient.Unsubscribe(new string[] { selectedChannelName });
+            }
         }
         else
         {
@@ -166,30 +162,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnConnected()
     {
-        if (channelList != null && channelList.Length > 0)
+        if (channelList != null && channelList.Count > 0)
         {
-            chatClient.Subscribe(channelList, HistoryChatLength);
+            chatClient.Subscribe(channelList.ToArray(), HistoryChatLength);
         }
         playerId.text = playerName;
         chatPanel.SetActive(true);
-        if (friendsList != null && friendsList.Length > 0)
-        {
-            chatClient.AddFriends(friendsList);
-
-            foreach(string friend in friendsList)
-            {
-                if (friendPrefab != null && friend != playerName)
-                {
-                    SpawnFriend(friend);
-                }
-            }
-        }
-
-        if (friendPrefab != null)
-        {
-            friendPrefab.SetActive(false);
-        }
-
+        
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
 
         myColor = new Color(Random.Range(0f, 255f), Random.Range(0f, 255f), Random.Range(0f, 255f));
@@ -197,7 +176,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnDisconnected()
     {
-        
+        chatClient.SetOnlineStatus(ChatUserStatus.Offline);
     }
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
@@ -213,8 +192,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         otherColor = new Color(Random.Range(0f, 255f), Random.Range(0f, 255f), Random.Range(0f, 255f));
 
-        SpawnChannel(channelName);
-
         if (selectedChannelName.Equals(channelName))
         {
             ShowChannnel(channelName);
@@ -223,14 +200,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
-        //if (friendItemList.ContainsKey(playerName))
-        //{
-        //    Friend friend = friendItemList[playerName];
-        //    if (friend != null)
-        //    {
-        //        friend.SetFriendOnlineStatus(status);
-        //    }
-        //}
+        
     }
 
     public void OnSubscribed(string[] channels, bool[] results)
@@ -238,11 +208,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         foreach (string channel in channels)
         {
             chatClient.PublishMessage(channel, "HELLO WORLD!!!!!!!!");
-
-            if (channelPrefab != null)
-            {
-                SpawnChannel(channel);
-            }
+            channelList.Add(channel);
         }
 
         ShowChannnel(channels[0]);
@@ -252,58 +218,39 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         foreach (string channelName in channels)
         {
-            //if (channelButtons.ContainsKey(channelName))
-            //{
-            //    Button button = channelButtons[channelName];
-            //    Destroy(button.gameObject);
-
-            //    channelButtons.Remove(channelName);
-
-            //    if (channelName == selectedChannelName && channelButtons.Count > 0)
-            //    {
-            //        IEnumerator<KeyValuePair<string, Button>> channelEntry = channelButtons.GetEnumerator();
-            //        channelEntry.MoveNext();
-
-            //        ShowChannnel(channelEntry.Current.Key);
-            //    }
-            //}
+            if (channelList.Contains(channelName))
+            {
+                channelList.Remove(channelName);
+            }
         }
     }
 
     public void OnUserSubscribed(string channel, string user)
     {
-        
+        bool isPrivate = chatClient.PrivateChannels.ContainsKey(channel);
+        if (isPrivate)
+        {
+            chatClient.SendPrivateMessage(channel, "Who's ready to chat");
+        }
+        else
+        {
+            chatClient.PublishMessage(channel, "Who's ready to chat");
+        }
     }
 
     public void OnUserUnsubscribed(string channel, string user)
     {
-        
+        bool isPrivate = chatClient.PrivateChannels.ContainsKey(channel);
+        if (isPrivate)
+        {
+            chatClient.SendPrivateMessage(channel, "See ya");
+        }
+        else
+        {
+            chatClient.PublishMessage(channel, "See ya");
+        }
     }
 
     #endregion
-
-    void SpawnChannel(string channelName)
-    {
-        //if (channelButtons.ContainsKey(channelName))
-        //{
-        //    return;
-        //}
-
-        GameObject channel = Instantiate(channelPrefab);
-        channel.SetActive(true);
-        channel.transform.SetParent(channelPanel, false);
-        channel.GetComponentInChildren<SelectChannel>().SetChannel(channelName);
-        //channelButtons.Add(channelName, channel.GetComponent<Button>());
-    }
-
-    void SpawnFriend(string friendName)
-    {
-        GameObject friend = Instantiate(friendPrefab);
-        friend.gameObject.SetActive(true);
-        Friend friendItem = friend.GetComponent<Friend>();
-        friendItem.Name = friendName;
-        friend.transform.SetParent(friendPanel, false);
-        //friendItemList[friendName] = friendItem;
-    }
 
 }
