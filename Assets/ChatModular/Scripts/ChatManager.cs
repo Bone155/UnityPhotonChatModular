@@ -16,7 +16,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public Transform channelPanel;
     public List<string> channelList;
 
-    List<GameObject> playersInChannel = new List<GameObject>();
     public PlayerPanel playerPanel;
 
     public string playerName = "PlayerName";
@@ -103,7 +102,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         if (!foundChannel) { return; }
         channelDisplayText.color = otherColor;
         channelDisplayText.text = channel.ToStringMessages();
-
+        Refresh();
     }
 
     #endregion
@@ -158,6 +157,16 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             }
         }
 
+    }
+
+    void Refresh()
+    {
+        string[] players = new string[channel.MaxSubscribers];
+        channel.Subscribers.CopyTo(players);
+        for (int i = 0; i < players.Length; i++)
+        {
+            playerPanel.InstaniatePlayer(players[i]);
+        }
     }
 
     #endregion
@@ -221,7 +230,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel, "HELLO WORLD!!!!!!!!");
+            chatClient.PublishMessage(channel, "HELLO " + channel);
             channelList.Add(channel);
             InstantiateChannel(channel);
         }
