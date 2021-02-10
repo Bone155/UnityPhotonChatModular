@@ -2672,8 +2672,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HistoryChatLength: 0
+  channelPrefab: {fileID: 3304649436989025686, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
+    type: 3}
+  channelPanel: {fileID: 1939854719}
   channelList:
   - World
+  playerPanel: {fileID: 696793558}
   playerName: PlayerName
   playerId: {fileID: 1255840982}
   chatPanel: {fileID: 1231093034}

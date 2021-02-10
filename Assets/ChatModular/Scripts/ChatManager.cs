@@ -4,14 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;
 using Photon.Pun;
-using ExitGames.Client.Photon;
 
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
     public ChatClient chatClient;
     public int HistoryChatLength = 0;
 
+    ChatChannel channel;
+
+    public GameObject channelPrefab;
+    public Transform channelPanel;
     public List<string> channelList;
+
+    List<GameObject> playersInChannel = new List<GameObject>();
+    public PlayerPanel playerPanel;
 
     public string playerName = "PlayerName";
     public Text playerId;
@@ -21,8 +27,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public InputField chatInput;
     public Text channelDisplayText;
-
-    string selectedChannelName;
 
     Color myColor;
     Color otherColor;
@@ -64,12 +68,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             UseBackgroundWorkerForSending = true,
             AuthValues = new AuthenticationValues(playerName)
         };
+        channel = new ChatChannel(channelList[0]);
         chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(PlayerPrefs.GetString(playerName)));
     }
 
     public void EnterSend()
     {
-        if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
+        if ((Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)) && !string.IsNullOrEmpty(chatInput.text))
         {
             channelDisplayText.color = myColor;
             SendChatMessage(chatInput.text);
@@ -79,7 +84,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void ClickSend()
     {
-        if (chatInput != null)
+        if (!string.IsNullOrEmpty(chatInput.text))
         {
             channelDisplayText.color = myColor;
             SendChatMessage(chatInput.text);
@@ -87,19 +92,43 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         }
     }
 
-    public void SendChatMessage(string inputLine)
+    public void ShowChannnel(string channelName)
+    {
+        if (string.IsNullOrEmpty(channelName))
+        {
+            return;
+        }
+
+        bool foundChannel = chatClient.TryGetChannel(channelName, out channel);
+        if (!foundChannel) { return; }
+        channelDisplayText.color = otherColor;
+        channelDisplayText.text = channel.ToStringMessages();
+
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    void InstantiateChannel(string channelName)
+    {
+        GameObject channelObject = Instantiate(channelPrefab, channelPanel);
+        channelObject.gameObject.SetActive(true);
+        channelObject.GetComponentInChildren<SelectChannel>().SetChannel(channelName);
+        channelList.Add(channelName);
+    }
+
+    void SendChatMessage(string inputLine)
     {
         if (!string.IsNullOrEmpty(inputLine))
         {
             return;
         }
 
-        bool isPrivate = chatClient.PrivateChannels.ContainsKey(selectedChannelName);
         string privateChatTarget = string.Empty;
-        if (isPrivate)
+        if (channel.IsPrivate)
         {
-            string[] splitNames = selectedChannelName.Split(new char[] { ':' });
-            privateChatTarget = splitNames[1];
+            
         }
 
         if (inputLine[0].Equals('@'))
@@ -114,35 +143,20 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             //}
             if (inputLine.Equals("@Leave"))
             {
-                chatClient.Unsubscribe(new string[] { selectedChannelName });
+                chatClient.Unsubscribe(new string[] { channel.Name });
             }
         }
         else
         {
-            if (isPrivate)
+            if (channel.IsPrivate)
             {
                 chatClient.SendPrivateMessage(privateChatTarget, inputLine);
             }
             else
             {
-                chatClient.PublishMessage(selectedChannelName, inputLine);
+                chatClient.PublishMessage(channel.Name, inputLine);
             }
         }
-
-    }
-
-    public void ShowChannnel(string channelName)
-    {
-        if (string.IsNullOrEmpty(channelName))
-        {
-            return;
-        }
-
-        bool foundChannel = chatClient.TryGetChannel(channelName, out ChatChannel channel);
-        if (!foundChannel) { return; }
-        selectedChannelName = channelName;
-        channelDisplayText.color = otherColor;
-        channelDisplayText.text = channel.ToStringMessages();
 
     }
 
@@ -150,7 +164,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     #region IChatClientListener implementation
 
-    public void DebugReturn(DebugLevel level, string message)
+    public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
     {
         
     }
@@ -182,9 +196,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         otherColor = new Color(Random.Range(0f, 255f), Random.Range(0f, 255f), Random.Range(0f, 255f));
-        if (channelName.Equals(selectedChannelName))
+        if (channelName.Equals(channel.Name))
         {
-            ShowChannnel(selectedChannelName);
+            ShowChannnel(channelName);
         }
     }
 
@@ -192,7 +206,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         otherColor = new Color(Random.Range(0f, 255f), Random.Range(0f, 255f), Random.Range(0f, 255f));
 
-        if (selectedChannelName.Equals(channelName))
+        if (channel.Name.Equals(channelName))
         {
             ShowChannnel(channelName);
         }
@@ -209,6 +223,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         {
             chatClient.PublishMessage(channel, "HELLO WORLD!!!!!!!!");
             channelList.Add(channel);
+            InstantiateChannel(channel);
         }
 
         ShowChannnel(channels[0]);

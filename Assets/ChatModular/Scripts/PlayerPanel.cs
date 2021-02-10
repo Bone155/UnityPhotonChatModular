@@ -5,14 +5,19 @@ using UnityEngine.UI;
 
 public class PlayerPanel : MonoBehaviour
 {
-    public GameObject playerPrefab;
+    [SerializeField] GameObject playerPrefab;
 
-    public void PlayersInChannel(List<string> playerList)
+    public void InstaniatePlayer(string name)
     {
-        for (int i = 0; i < playerList.Count; i++)
+        GameObject player = Instantiate(playerPrefab, transform);
+        player.GetComponentInChildren<Text>().text = name;
+    }
+
+    public void OnRightClick()
+    {
+        if (Input.GetMouseButtonDown(1))
         {
-            GameObject player = Instantiate(playerPrefab, transform);
-            player.GetComponentInChildren<Text>().text = playerList[i];
+
         }
     }
 }
