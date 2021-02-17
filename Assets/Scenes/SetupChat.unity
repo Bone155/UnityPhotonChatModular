@@ -203,8 +203,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7605142853424617448}
-        m_MethodName: StartChat
+      - m_Target: {fileID: 7605142853424617446}
+        m_MethodName: EnterName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -431,7 +431,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7605142853424617446}
-        m_MethodName: ClickSend
+        m_MethodName: ClickSendMsg
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1125,8 +1125,8 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7605142853424617448}
-        m_MethodName: OnEnter
+      - m_Target: {fileID: 7605142853424617446}
+        m_MethodName: EnterName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2651,7 +2651,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7605142853424617447}
   - component: {fileID: 7605142853424617446}
-  - component: {fileID: 7605142853424617448}
   m_Layer: 0
   m_Name: ChatManager
   m_TagString: Untagged
@@ -2671,13 +2670,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ca1c9834a0c984eb489972df19a516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HistoryChatLength: 0
+  HistoryChatLength: 15
   channelPrefab: {fileID: 3304649436989025686, guid: 1c317c1a7cd8c5c4fb2bcd41ac33de6a,
     type: 3}
   channelPanel: {fileID: 1939854719}
   channelList:
   - World
+  - AIE
   playerPanel: {fileID: 696793558}
+  signInField: {fileID: 701968302}
   playerName: PlayerName
   playerId: {fileID: 1255840982}
   chatPanel: {fileID: 1231093034}
@@ -2698,19 +2699,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7605142853424617448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7605142853424617445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 634e6455fca3e9b4aa3b2b4e867b6400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputField: {fileID: 701968302}
 --- !u!1 &7605142853468458188
 GameObject:
   m_ObjectHideFlags: 0
@@ -3016,7 +3004,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7605142853424617446}
-        m_MethodName: EnterSend
+        m_MethodName: SendMsg
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerPanel : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
+    public GameObject playerPrefab;
 
     public void InstaniatePlayer(string name)
     {
