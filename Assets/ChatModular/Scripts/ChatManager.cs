@@ -16,16 +16,14 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public Transform channelPanel;
     public List<string> channelList;
 
-    public PlayerPanel playerPanel;
-
     public InputField signInField;
+    public GameObject signInPanel;
 
+    public PlayerPanel playerPanel;
     string playerName = "PlayerName";
     public Text playerId;
 
     public GameObject chatPanel;
-    public GameObject signInPanel;
-
     public InputField chatInput;
     public Text channelDisplayText;
 
@@ -60,6 +58,23 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     }
 
     #region Public Methods
+
+    public void Connect()
+    {
+        signInPanel.SetActive(false);
+
+        if (!string.IsNullOrEmpty(signInField.text))
+        {
+            playerName = signInField.text;
+        }
+
+        chatClient = new ChatClient(this);
+
+        chatChannel = new ChatChannel(channelList[0]);
+
+        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(playerName));
+        PhotonNetwork.NickName = playerName;
+    }
 
     public void EnterName()
     {
@@ -106,23 +121,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     #endregion
 
     #region Private Methods
-    
-    void Connect()
-    {
-        signInPanel.SetActive(false);
-
-        if (!string.IsNullOrEmpty(signInField.text))
-        {
-            playerName = signInField.text;
-            PhotonNetwork.NickName = playerName;
-        }
-
-        chatClient = new ChatClient(this);
-
-        chatChannel = new ChatChannel(channelList[0]);
-
-        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(playerName));
-    }
 
     void InstantiateChannel(string channelName)
     {
@@ -143,28 +141,14 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         string privateChatTarget = string.Empty;
         if (isPrivate)
         {
-            
+            privateChatTarget = chatChannel.Name;
         }
 
-        if (inputLine.Equals("@" + privateChatTarget))
+        if (inputLine.Contains("@" + chatChannel.Subscribers))
         {
             chatClient.SendPrivateMessage(privateChatTarget, inputLine);
         }
-        else if (inputLine.Equals("clear_messages"))
-        {
-            if (isPrivate)
-            {
-                chatClient.PrivateChannels.Remove(chatChannel.Name);
-            }
-            else
-            {
-                if (chatClient.TryGetChannel(chatChannel.Name, isPrivate, out chatChannel))
-                {
-                    chatChannel.ClearMessages();
-                }
-            }
-        }
-        else if (inputLine.Equals("leave_channel"))
+        else if (inputLine.Contains("leave " + chatChannel.Name))
         {
             chatClient.Unsubscribe(new string[] { chatChannel.Name });
         }
@@ -237,6 +221,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
         otherColor = new Color(Random.Range(0f, 255f), Random.Range(0f, 255f), Random.Range(0f, 255f));
+
+        InstantiateChannel(channelName);
 
         if (chatChannel.Name.Equals(channelName))
         {
